@@ -1,6 +1,8 @@
 package com.hamzajg.tddandroid;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -99,7 +101,14 @@ public class StringCalculator {
         }
 
         // Longest first: java.util.regex takes the first alternative that matches.
-        quoted.sort((first, second) -> second.length() - first.length());
+        // An anonymous Comparator rather than a lambda: this module compiles at
+        // -source 1.7, which predates lambda expressions.
+        Collections.sort(quoted, new Comparator<String>() {
+            @Override
+            public int compare(String first, String second) {
+                return second.length() - first.length();
+            }
+        });
 
         StringBuilder alternation = new StringBuilder();
         for (String delimiter : quoted) {
