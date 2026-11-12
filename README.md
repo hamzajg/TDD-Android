@@ -17,6 +17,9 @@ sums the numbers in a string:
 | Numbers are separated by commas | `"1,2" -> 3` |
 | A newline also separates numbers | `"1\n2,3" -> 6` |
 | A custom delimiter can be declared | `"//;\n1;2" -> 3` |
+| A delimiter of any length can be declared in brackets | `"//[***]\n1***2***3" -> 6` |
+| Several delimiters can be declared together | `"//[*][%]\n1*2%3" -> 6` |
+| A malformed bracketed delimiter is rejected | `"//[***\n1" -> IllegalArgumentException` |
 | Negative numbers are rejected, and every negative is reported | `"-1,2,-3" -> IllegalArgumentException("negatives not allowed: -1, -3")` |
 | Numbers greater than 1000 are ignored | `"2,1001" -> 2` |
 
