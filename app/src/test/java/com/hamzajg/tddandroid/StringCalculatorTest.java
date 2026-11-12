@@ -76,6 +76,41 @@ public class StringCalculatorTest {
     }
 
     @Test
+    public void multiCharacterDelimiterIsSupported() {
+        assertEquals(6, calculator.add("//[***]\n1***2***3"));
+    }
+
+    @Test
+    public void multipleDelimitersAreSupported() {
+        assertEquals(6, calculator.add("//[*][%]\n1*2%3"));
+    }
+
+    @Test
+    public void theLongestDelimiterWins() {
+        assertEquals(3, calculator.add("//[**]\n1**2"));
+    }
+
+    @Test
+    public void anUnclosedBracketedDelimiterIsRejected() {
+        try {
+            calculator.add("//[***\n1");
+            fail("expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("]"));
+        }
+    }
+
+    @Test
+    public void anEmptyBracketedDelimiterIsRejected() {
+        try {
+            calculator.add("//[]\n1");
+            fail("expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("empty"));
+        }
+    }
+
+    @Test
     public void numbersGreaterThanOneThousandAreIgnored() {
         assertEquals(2, calculator.add("2,1001"));
     }
