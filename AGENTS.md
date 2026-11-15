@@ -8,8 +8,8 @@ Android unit-testing / TDD practice (Udemy course). The app is the stock
 empty Android template; the substance is the **String Calculator kata** —
 a plain JVM class written test-first, exercised by local unit tests (no
 emulator needed).
-Stack: Android (AGP 3.4.1 / Gradle 5.1.1), Java 8, Android SDK 28,
-JUnit 4, Espresso (template only).
+Stack: Android (AGP 8.7.3 / Gradle 8.9), Java 17, AndroidX,
+compileSdk/targetSdk 34, JUnit 4, Espresso (template only).
 
 ## Commands
 
@@ -17,12 +17,13 @@ Verified 2026-11-13 against CI (`.github/workflows/ci.yml`) and README.
 
 | Task | Command |
 |---|---|
-| Unit tests | `sh gradlew test --no-daemon` (CI: JDK 8 + Android SDK 28) |
+| Unit tests | `sh gradlew test --no-daemon` (CI: JDK 17 + Android SDK 34) |
 | Test report | `app/build/reports/tests/testDebugUnitTest/index.html` |
 | Run tests without Gradle | `javac`/`java org.junit.runner.JUnitCore` recipe in README (needs junit-4.12 + hamcrest jars) |
 
-Requires: **JDK 8** (AGP 3.4.1/Gradle 5.1.1 can't run on newer), Android SDK
-platform 28 + build-tools 28.0.3. Instrumented tests (`androidTest`) need
+Requires: **JDK 17** (AGP 8.x needs it), Android SDK
+platform 34 + build-tools 34.0.0. `local.properties` must point
+`sdk.dir` at the SDK. Instrumented tests (`androidTest`) need
 an emulator — CI only runs local unit tests.
 
 ## Architecture
@@ -58,10 +59,9 @@ numbers > 1000 ignored.
 ## Landmines
 
 - **Default branch is `master`, not `main`.**
-- **JDK 8 is mandatory** — AGP 3.4.1 + Gradle 5.1.1 fail on modern JDKs;
-  CI pins `java-version: "8"`. Don't bump the wrapper/AGP casually.
-- `compileSdkVersion 28` — needs SDK platform 28 + build-tools 28.0.3;
-  newer SDKs may break the old AGP.
+- Modernized 2026-11: AGP 3.4.1→8.7.3, Gradle 5.1.1→8.9, SDK 28→34,
+  support libs → AndroidX, JDK 8→17. `namespace` set in app/build.gradle
+  (manifest `package=` removed — AGP 8 forbids it).
 - `testDebugUnitTest` is the unit-test task — `connectedAndroidTest`
   needs a device and isn't in CI.
 - README documents a manual javac/JUnitCore fallback — useful when the
